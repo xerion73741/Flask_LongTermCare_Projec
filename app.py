@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, make_response, session, url_for
+from flask import Flask, render_template, request, redirect, make_response, session, url_for, g
 import sqlite3
 import re  # for email validation
 from crawler import crawl_news
@@ -17,6 +17,7 @@ def login_required(view_func):
     def wrapper(*args, **kwargs):
         if session.get('logined') != '1':
             return redirect(url_for('login_form'))
+        g.userName = request.cookies.get('userName')
         return view_func(*args, **kwargs)
     return wrapper
 
@@ -52,7 +53,7 @@ def login():
         db_name = result[3]
         if passwd == db_passwd:
             # make_response 是為了 set_cookie
-            resp = make_response(render_template('home.html', userName=db_name))
+            resp = make_response(redirect(url_for('home')))
             resp.set_cookie('userName', db_name)
             # session Flask會自動回傳給 user
             session['logined'] = "1"
@@ -104,29 +105,33 @@ def logout():
 @app.route('/search', methods=["POST", "GET"])
 @login_required
 def search():
+    name = request.cookies.get('userName')
+
     if request.method == 'POST':
         city = request.form.get('city')
         dist = request.form.get('dist')
         if not city or not dist:
-            return render_template('search.html')
+            return render_template('search.html', userName=name)
 
         # 先產生 map_html
         map_html = create_longtermcare_map(city, dist)
 
         # 接著檢查 map_html 是不是「查無資料」的訊息
         if "<p style='color:red;'>查無資料，請重新輸入</p>" in map_html:
-            return render_template('search.html', map_html=map_html)
+            return render_template('search.html', map_html=map_html, userName=name)
         else:
-            return render_template('search.html', map_html=map_html)
+            return render_template('search.html', map_html=map_html, userName=name)
     # 如果沒有東西進來
     else:
-        return render_template('search.html')
+        return render_template('search.html', userName=name)
 
 @app.route("/news", methods=["GET", "POST"]) # 新聞
 @login_required
 def news():
     news_list = crawl_news()
-    return render_template("news.html", news_list=news_list)
+    name = request.cookies.get('userName')
+
+    return render_template("news.html", news_list=news_list, userName=name)
 
 if __name__ == '__main__':
     app.run(debug=True, use_reloader=False)
