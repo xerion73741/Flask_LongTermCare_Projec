@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, make_response, session, url_for, g
+from flask import Flask, render_template, request, redirect, make_response, session, url_for
 import sqlite3
 import re  # for email validation
 from crawler import crawl_news
@@ -17,7 +17,6 @@ def login_required(view_func):
     def wrapper(*args, **kwargs):
         if session.get('logined') != '1':
             return redirect(url_for('login_form'))
-        g.userName = request.cookies.get('userName')
         return view_func(*args, **kwargs)
     return wrapper
 
