@@ -296,4 +296,7 @@ def volunteer_schedule():
 
 
 if __name__ == '__main__':
-    app.run(debug=True, use_reloader=True)
+    # 這段程式碼只在您直接運行 app.py 時執行，例如在本地開發時
+    import os
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host='0.0.0.0', port=port, debug=True, use_reloader=True)

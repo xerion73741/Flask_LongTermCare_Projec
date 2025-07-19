@@ -5,3 +5,4 @@ lxml
 pandas
 ipykernel
 folium
+Gunicorn 
