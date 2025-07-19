@@ -8,6 +8,7 @@
 	<!-- css文件載入 -->
 	<link rel="stylesheet" href="../static/css/bootstrap.css">
 	<link rel="stylesheet" href="../static/css/style.css">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/volunteer_schedule.css') }}">
 
 
 </head>
@@ -50,17 +51,15 @@
 	<div class= "row pt-3">
 
 		<div class="col-md-4 text-center bg-body shadow rounded"> <!-- 把 text-center 放在div 最外層這樣下方的 h3 p 標籤內的文字都會置中-->
-			<h3 class="text-darkblue">加入我們</h3> <!--strong 這是css 內建讓粗體的寫法-->
-      <ul>
-        <li><a href="{{ url_for('volunteer_register') }}">志工註冊</a></li>
-      <li class="lh-lg"><a href="{{ url_for('volunteer_schedule') }}">班表</a></li>
-      </ul>
+			<h3 class="text-darkblue">服務項目</h3> <!--strong 這是css 內建讓粗體的寫法-->
+      <p class="lh-lg"><a href="{{ url_for('search') }}">查詢各地長照中心位置</a></p>
+      <p class="lh-lg"><a href="#">各縣市長期照顧管理中心聯繫窗口</a></p>
 		</div>
 	<div class="col-md-4 text-center bg-body shadow rounded">
   <h3 class="text-darkblue">長照新聞</h3>
   <div class="lh-lg text-start px-3">
     {% for title, link in top5_news %}
-      <p><a href="{{ url_for('news') }}" target="_blank" class="news-link">{{ title }}</a></p>
+      <li class="tighter-list"><a href="{{ url_for('news') }}" target="_blank" class="news-link">{{ title }}</a></li>
     {% endfor %}
   </div>
   <div class="text-end px-3 pb-2">
@@ -68,8 +67,9 @@
   </div>
 </div>
 		<div class="col-md-4 text-center bg-body shadow rounded">
-			<h3 class="text-darkblue">服務據點</h3>
-			<p class="lh-lg"><a href="{{ url_for('search') }}">查詢各地長照中心位置。</a></p>
+			<h3 class="text-darkblue">關於我們</h3>
+			<p class="lh-lg"><a href="{{ url_for('volunteer_register') }}">志工註冊</a></p>
+      <p class="lh-lg"><a href="{{ url_for('volunteer_schedule') }}">班表</a></p>
 		</div >
 
 	</div>

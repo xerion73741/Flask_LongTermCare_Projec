@@ -251,6 +251,7 @@ def volunteer_schedule():
 
     if request.method == "GET":
         shifts_7 = db.get_shifts_grouped_by_date_time()  # 這裡改用新的函式
+        personal_shifts_7 = db.get_all_shifts() 
         personal_shifts = db.query_personal_shifts(volunteer_id)
         today = date.today()
         week = ['日', '一', '二', '三', '四', '五', '六']
@@ -261,7 +262,8 @@ def volunteer_schedule():
             shifts_7=shifts_7,
             today=today,
             week=week,
-            timedelta=timedelta
+            timedelta=timedelta,
+            personal_shifts_7=personal_shifts_7
         )
 
 

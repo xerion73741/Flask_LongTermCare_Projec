@@ -22,9 +22,9 @@
     </div>
   </nav>
 </section>
-
-{% block title %}志工班表{% endblock title %}
-
+<section class="news-section pt-3 ">
+	<div class="container">
+    <h4 class="text-darkblue mb-4">{% block title %}志工班表{% endblock title %}</h4>
 {% block content %}
 {% set week = week or ['日', '一', '二', '三', '四', '五', '六'] %}
 
@@ -67,7 +67,7 @@
   {% set week = ['日', '一', '二', '三', '四', '五', '六'] %}
   {% for i in range(7) %}
   <div class='mb-3'>
-    <label for="status_{{ i }}" class="form-label" style="display: block; background-color: #d0f0fd;">
+    <label for="status_{{ i }}" class="form-label" style="display: block; background-color: #003366;">
       星期{{ week[i] }}排班狀態:
     </label>      
     <select class="form-select" id="status_{{ i }}" name="status_{{ i }}">
@@ -85,7 +85,8 @@
 </form>
 
 {% endblock content %}
-
+</div>
+</section>
 <footer class="pt-3 pb-3 bg-dark bg-opacity-75 text-white text-center">
   <p class="mb-0">© 2025 鄉民護航圖：扶奶奶過馬路</p>
 </footer>

@@ -9,7 +9,7 @@ class volunteers_db:
 
     def _connect(self):
         conn = sqlite3.connect(self.db_path)
-        # 將讀出來的資料裝在 dict
+        # 出來的物件像是 dict, 可以用 key: value 取
         conn.row_factory = sqlite3.Row 
         return conn
 
@@ -163,31 +163,41 @@ class volunteers_db:
             ''', (limit,))
             return cursor.fetchall()
         
-    def query_personal_shifts(self, volunteer_id, shift_date=None):
+        # 個人班表前七日查詢 (list of dict)
+    def query_personal_shifts(self, account, shift_date=None):
         with self._connect() as conn:
+            conn.row_factory = sqlite3.Row
             cursor = conn.cursor()
             query = """
-                SELECT v.name, s.shift_date, s.shift_time, s.note
+                SELECT v.name, v.account, s.shift_date, s.shift_time, s.note
                 FROM shifts s
                 JOIN volunteers v ON s.volunteer_id = v.id
-                WHERE s.volunteer_id = ?
+                WHERE v.account = ?
             """
-            params = [volunteer_id]
+            params = [account]
 
             if shift_date:
-                query += " AND shift_date = ?"
+                query += " AND s.shift_date = ?"
                 params.append(shift_date)
 
-            query += " ORDER BY shift_date ASC, shift_time ASC"
+            query += " ORDER BY s.shift_date DESC, s.shift_time ASC LIMIT 7"
             cursor.execute(query, params)
-            return cursor.fetchall()
-    
+
+            rows = cursor.fetchall()
+
+            # 反轉順序，讓資料從「舊到新」
+            results = list(reversed([dict(row) for row in rows]))
+            return results
+
+
+        # 以 volunteer_id 及日期刪除
     def delete_shifts_for_date(self, volunteer_id, shift_date):
         with self._connect() as conn:
             cursor = conn.cursor()
             cursor.execute('DELETE FROM shifts WHERE volunteer_id = ? AND shift_date = ?', (volunteer_id, shift_date))
             conn.commit()
 
+        # 所有班表前七日查詢
     def get_shifts_grouped_by_date_time(self):
         with self._connect() as conn:
             cursor = conn.cursor()
@@ -208,8 +218,14 @@ class volunteers_db:
     
 if __name__ == '__main__':
     db = volunteers_db()
-    shifts_7 = db.get_shifts_grouped_by_date_time()
-    print(shifts_7)
+    #個人班表前七日
+    shift_7 = db.query_personal_shifts('volunteer2')
+    print(shift_7)
+
+    # 所有班表前七日
+    # shifts_7 = db.get_shifts_grouped_by_date_time()
+    # print(shifts_7)
+    
     # db.insert_volunteers('藍藍', 'blue', '1234', '新北市', 'blue@blue.com', '1234')
     # print(db.query_volunteers())
     # db.update_volunteers(1, phone='0985511228')

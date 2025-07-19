@@ -53,7 +53,7 @@ img{
   color: #003366;
 }
 table {
-  width: 100%;
+  width: 80%;
   border-collapse: separate;
   border-spacing: 0 12px; /* 垂直間距12px，水平無間距 */
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -64,15 +64,16 @@ table {
 }
 
 th, td {
-  padding: 12px 20px;
-  text-align: left;
+  padding: 12px 15px;
+  text-align: center;
   background: white;
   border-bottom: 1px solid #ddd;
+  color: #003366;
 }
 
 th {
   background-color: #007bff;
-  color: white;
+  color:  #003366;
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.05em;
@@ -85,4 +86,10 @@ tr:hover td {
 
 tbody tr:last-child td {
   border-bottom: none;
+}
+.tighter-list{
+  margin-left: 0;
+  padding-left: 1rem;
+  list-style-position: inside;
+  margin-left: -6px
 }
