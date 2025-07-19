@@ -1,5 +1,6 @@
 import sqlite3
 from collections import defaultdict
+from datetime import date, timedelta
 
 DB_NAME = 'volunteers.db'
 class volunteers_db:
@@ -199,14 +200,17 @@ class volunteers_db:
 
         # 所有班表前七日查詢
     def get_shifts_grouped_by_date_time(self):
+        today = date.today()
+        end_date = today + timedelta(days=6)
+
         with self._connect() as conn:
             cursor = conn.cursor()
             cursor.execute('''
                 SELECT v.name, s.shift_date, s.shift_time
                 FROM shifts s
                 JOIN volunteers v ON s.volunteer_id = v.id
-                WHERE s.shift_date BETWEEN date('now') AND date('now', '+6 days')
-            ''')
+                WHERE s.shift_date BETWEEN ? AND ?
+            ''', (today.isoformat(), end_date.isoformat()))
             rows = cursor.fetchall()
 
         shifts = defaultdict(lambda: defaultdict(list))
@@ -215,16 +219,17 @@ class volunteers_db:
 
         return shifts
 
+
     
 if __name__ == '__main__':
     db = volunteers_db()
     #個人班表前七日
-    shift_7 = db.query_personal_shifts('volunteer2')
-    print(shift_7)
+    # shift_7 = db.query_personal_shifts('volunteer2')
+    # print(shift_7)
 
     # 所有班表前七日
-    # shifts_7 = db.get_shifts_grouped_by_date_time()
-    # print(shifts_7)
+    shifts_7 = db.get_shifts_grouped_by_date_time()
+    print(len(shifts_7))
     
     # db.insert_volunteers('藍藍', 'blue', '1234', '新北市', 'blue@blue.com', '1234')
     # print(db.query_volunteers())

@@ -26,8 +26,9 @@
 	<div class="container">
     <h4 class="text-darkblue mb-4">{% block title %}志工班表{% endblock title %}</h4>
 {% block content %}
-{% set week = week or ['日', '一', '二', '三', '四', '五', '六'] %}
-
+{% set week_map = ['一', '二', '三', '四', '五', '六', '日'] %}
+{% set start = today.weekday() %}
+{% set week = week_map[start:] + week_map[:start] %}
 {% if shifts_7 %}
 <table border="1" class="table table-bordered text-center">
   <thead>
@@ -43,6 +44,7 @@
     <tr>
       <td><strong>{{ shift_time }}</strong></td>
       {% for i in range(7) %}
+      
         {% set date_key = (today + timedelta(days=i)).isoformat() %}
         <td>
           {% set names = shifts_7.get(date_key, {}).get(shift_time, []) %}

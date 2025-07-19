@@ -254,7 +254,13 @@ def volunteer_schedule():
         personal_shifts_7 = db.get_all_shifts() 
         personal_shifts = db.query_personal_shifts(volunteer_id)
         today = date.today()
-        week = ['日', '一', '二', '三', '四', '五', '六']
+        week_map = ['日', '一', '二', '三', '四', '五', '六']
+        start = today.weekday()  # 這裡你打錯變數名稱了，原本是 stert
+        # 注意 weekday() 回傳 0 是週一，所以要調整星期順序讓日對齊
+        # 將週一(0)轉換成星期陣列中正確的索引(1)
+        # 用 (start + 1) % 7 來調整日(星期天)是第一個元素
+        adjusted_start = (start + 1) % 7
+        week = week_map[adjusted_start:] + week_map[:adjusted_start]
 
         return render_template(
             "volunteer_schedule.html",
@@ -265,6 +271,7 @@ def volunteer_schedule():
             timedelta=timedelta,
             personal_shifts_7=personal_shifts_7
         )
+
 
 
     elif request.method == "POST":
