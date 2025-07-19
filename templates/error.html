@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <title>鄉民護航圖：錯誤通知</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body class="bg-light">
+
+<!-- 頁首 -->
+<header class="banner"> 
+  <img src="{{ url_for('static', filename='banner.jpg') }}" alt="banner" class="img-fluid">
+</header>
+
+<!-- 導覽列 -->
+<section>
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container">
+      <a class="navbar-brand" href="/">鄉民護航圖</a>
+    </div>
+  </nav>
+</section>
+
+<!-- 錯誤提示 -->
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+      <div class="card shadow">
+        <div class="card-header bg-danger text-white text-center">
+          <h4>⚠️ 發生錯誤</h4>
+        </div>
+        <div class="card-body text-center">
+          <p class="fs-5">{{ message }}</p>
+          <a href="{{ back_url }}" class="btn btn-secondary mt-3">返回上一頁</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 頁尾 -->
+<footer class="pt-3 pb-3 bg-dark bg-opacity-75 text-white text-center mt-4">
+  <p class="mb-0">© 2025 鄉民護航圖：扶奶奶過馬路</p>
+</footer>
+
+</body>
+</html>

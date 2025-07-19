@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>{% block title %}{% endblock title %}</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+	<!-- viewport 告訴瀏覽器目前載具 寬度與高度  initial-scale 初始的比例 1 表示 100%-->
+	<!-- css文件載入 -->
+	<link rel="stylesheet" href="../static/css/bootstrap.css">
+	<link rel="stylesheet" href="../static/css/style.css">
+
+
+</head>
+<body>
+<!-- 頁首/開始 -->
+<header class="banner"> 
+	<img src="../static/banner.jpg" alt="banner" class= "img-fluid"> <!-- img-fluid 是讓圖片有響應示的呈現方式 -->
+</header> 
+<!-- 頁首/結束 -->
+<!-- 登入 註冊 -->
+<section >
+	  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container">
+      <a class="navbar-brand" href="/">鄉民護航圖</a>
+      <div class="collapse navbar-collapse">
+        <ul class="navbar-nav ms-auto">
+         {% if volunteer %}
+            <li class="nav-item"><span class="nav-link">歡迎志工 {{ volunteer }}</span></li>
+            <li class="nav-item"><a class="nav-link" href="{{ url_for('volunteer_logout' )}}">登出</a></li>
+          {% elif userName %}
+            <li class="nav-item"><span class="nav-link">歡迎 {{ userName }}</span></li>
+            <li class="nav-item"><a class="nav-link" href="/logout">登出</a></li>
+          {% else %}
+            <li class="nav-item"><a class="nav-link" href="/login">登入</a></li>
+            <li class="nav-item"><a class="nav-link" href="/register">註冊</a></li>
+          {% endif %}
+        </ul>
+      </div>
+    </div>
+  </nav>
+</section>
+<!-- 推薦課程/結束 -->
+<section class = "container bg-white">
+	<div class="p-2 bg-info">
+			<p>現在時間：<span id="current-time"></span></p>
+			<h3 class="text-darkblue text-center"><strong>長照服務平台</strong></h3>
+			</div>
+  </section>
+  <section class = "container">
+	<div class= "row pt-3">
+
+		<div class="col-md-4 text-center bg-body shadow rounded"> <!-- 把 text-center 放在div 最外層這樣下方的 h3 p 標籤內的文字都會置中-->
+			<h3 class="text-darkblue">加入我們</h3> <!--strong 這是css 內建讓粗體的寫法-->
+      <ul>
+        <li><a href="{{ url_for('volunteer_register') }}">志工註冊</a></li>
+      <li class="lh-lg"><a href="{{ url_for('volunteer_schedule') }}">班表</a></li>
+      </ul>
+		</div>
+	<div class="col-md-4 text-center bg-body shadow rounded">
+  <h3 class="text-darkblue">長照新聞</h3>
+  <div class="lh-lg text-start px-3">
+    {% for title, link in top5_news %}
+      <p><a href="{{ url_for('news') }}" target="_blank" class="news-link">{{ title }}</a></p>
+    {% endfor %}
+  </div>
+  <div class="text-end px-3 pb-2">
+    <a href="{{ url_for('news') }}" class="btn btn-primary btn-sm">更多新聞</a>
+  </div>
+</div>
+		<div class="col-md-4 text-center bg-body shadow rounded">
+			<h3 class="text-darkblue">服務據點</h3>
+			<p class="lh-lg"><a href="{{ url_for('search') }}">查詢各地長照中心位置。</a></p>
+		</div >
+
+	</div>
+</section>
+        {% block content %}{% endblock content %}
+  <footer class="pt-3 pb-3 bg-dark bg-opacity-75 text-white text-center">
+	<p class="mb-0">© 2025 鄉民護航圖：扶奶奶過馬路</p>
+</footer>
+    <script>
+    function updateTime() {
+      const now = new Date();
+      const formattedTime = now.toLocaleString('zh-TW', { hour12: false });
+      document.getElementById('current-time').textContent = formattedTime;
+    }
+    setInterval(updateTime, 1000);
+    updateTime();
+  </script>
+</body>
+</html>

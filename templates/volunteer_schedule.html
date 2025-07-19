@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>鄉民護航圖：志工班表</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" /> 
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head> 
+
+<body>
+<header class="banner"> 
+  <img src="{{ url_for('static', filename='banner.jpg') }}" alt="banner" class="img-fluid">
+</header> 
+
+<section>
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container">
+      <a class="navbar-brand" href="/">鄉民護航圖</a>
+      <div class="collapse navbar-collapse"></div>
+    </div>
+  </nav>
+</section>
+
+{% block title %}志工班表{% endblock title %}
+
+{% block content %}
+{% set week = week or ['日', '一', '二', '三', '四', '五', '六'] %}
+
+{% if shifts_7 %}
+<table border="1" class="table table-bordered text-center">
+  <thead>
+    <tr>
+      <th>時段＼星期</th>
+      {% for i in range(7) %}
+        <th>{{ (today + timedelta(days=i)).strftime('%m/%d') }}<br>{{ week[i] }}</th>
+      {% endfor %}
+    </tr>
+  </thead>
+  <tbody>
+    {% for shift_time in ['早班', '午班', '晚班', '大夜', '休假'] %}
+    <tr>
+      <td><strong>{{ shift_time }}</strong></td>
+      {% for i in range(7) %}
+        {% set date_key = (today + timedelta(days=i)).isoformat() %}
+        <td>
+          {% set names = shifts_7.get(date_key, {}).get(shift_time, []) %}
+          {% if names %}
+            {{ names | join('<br>') | safe }}
+          {% else %}
+            -
+          {% endif %}
+        </td>
+      {% endfor %}
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% else %}
+  <p>目前沒有任何班表資料。</p>
+{% endif %}
+
+<br>
+
+<form method="POST" action="{{ url_for('volunteer_schedule') }}">
+  {% set week = ['日', '一', '二', '三', '四', '五', '六'] %}
+  {% for i in range(7) %}
+  <div class='mb-3'>
+    <label for="status_{{ i }}" class="form-label" style="display: block; background-color: #d0f0fd;">
+      星期{{ week[i] }}排班狀態:
+    </label>      
+    <select class="form-select" id="status_{{ i }}" name="status_{{ i }}">
+      <option value="早班">早班</option>
+      <option value="午班">午班</option>
+      <option value="晚班">晚班</option>
+      <option value="大夜">大夜</option>
+      <option value="休假">休假</option>
+    </select>
+    <label for="note_{{ i }}" class="form-label mt-2">備註:</label>
+    <input type="text" class="form-control" id="note_{{ i }}" name="note_{{ i }}" placeholder="可填寫原因或說明">
+  </div>
+  {% endfor %}
+  <button type="submit" class="btn btn-primary">送出</button>
+</form>
+
+{% endblock content %}
+
+<footer class="pt-3 pb-3 bg-dark bg-opacity-75 text-white text-center">
+  <p class="mb-0">© 2025 鄉民護航圖：扶奶奶過馬路</p>
+</footer>
+</body>
+</html>

@@ -1,0 +1,41 @@
+
+{% extends "base.html" %}
+
+{% block title %}長照新聞{% endblock title %}
+
+{% block content %}
+<body>
+    <section class="news-section pt-3 ">
+	<div class="container">
+    <h4 class="text-darkblue mb-4"> 長照新聞 </h4>
+    {% for news in news_list %}
+		<div class="news-card row align-items-start bg-body shadow rounded mb-4">
+      <!--左側圖片-->
+			<div class="col-md-4 mt-2 mb-2">
+			  {% if news.img != '無圖片' %}
+        <img src="{{ news.img }}" alt="新聞照片" class="news-img img-fluid">
+            {% endif %}
+			</div>
+      <!--右邊文字內容-->
+			<div class="col-md-8">
+      <h5 class="news-title mt-2">    
+            <a href="{{ news.link }}" target= "_blank"> {{ news.title }}</a>
+      </h5>
+				<p class="news-context">{{ news.context }}</p> 
+			</div>
+		</div>
+    {% endfor %}
+    <!--分頁控制-->
+    <nav class="mt-4  text-center">
+      {% if current_page > 1 %}
+      <a href="{{url_for('news', page=current_page -1)}}" class="btn btn-outline-primary">上一頁</a>
+      {% endif %}
+      <span class="mx-3">第 {{ current_page}} 頁 / 共 {{ total_pages}} 頁</span>
+      {% if current_page< total_pages %}
+      <a href="{{url_for('news', page=current_page+1)}}" class="btn btn-outline-primary">下一頁</a>
+      {% endif %}
+    </nav>
+        <p><small>取自：<a href="https://www.twreporter.org/tag/58e5b2660f56b40d001ae6ea" target="_blank" rel="noopener noreferrer">報導者網站</a></small></p>
+	</div>
+</section>
+  {% endblock content %}

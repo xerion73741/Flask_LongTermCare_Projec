@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+
+{% block title %}長照地圖{% endblock title %}
+
+{% block content %}
+
+<section>
+  <div class="container">
+  <div class="row justify-content-center">
+    <div class="col-md-12">
+      <div class="card shadow">
+        <div class="card-header text-white text-center">
+<form class="center" method="post" action="/search">
+  <h4 class="fw-bolder">請輸入住址資訊</h4>
+  <label style="display:inline-block; width: 70px;">縣市:</label>
+  <input name="city" size="20">
+  <label style="display:inline-block; width: 70px;">行政區:</label>
+  <input name="dist" size="20"><br>
+  <button type="submit" class="center mt-2">查詢</button>
+</form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+{#
+<form method="post" action="/search">
+  <label>縣市: 
+    <select name="city">
+      <option value="台北市">台北市</option>
+      <option value="新北市">新北市</option>
+      <option value="高雄市">高雄市</option>
+      <!-- 加更多縣市 -->
+    </select>
+  </label><br>
+  <label>行政區: 
+    <select name="dist">
+      <option value="中正區">中正區</option>
+      <option value="信義區">信義區</option>
+      <option value="大安區">大安區</option>
+      <!-- 加更多行政區 -->
+    </select>
+  </label><br>
+  <button type="submit">查詢</button>
+</form>
+#}
+{% if message %}
+  <p style="color:red;">{{ message }}</p>
+{% endif %}
+
+{% if map_html %}
+  {{ map_html | safe }}
+{% endif %}
+
+{% endblock content %}
+</div>
+</section>

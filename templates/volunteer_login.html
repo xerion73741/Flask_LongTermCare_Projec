@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>鄉民護航圖：志工登入</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head> 
+
+<body>
+<!-- 頁首/開始 -->
+<header class="banner"> 
+	<img src="{{ url_for('static', filename='banner.jpg') }}" alt="banner" class= "img-fluid"> <!-- img-fluid 是讓圖片有響應示的呈現方式 -->
+</header> 
+<!-- 頁首/結束 -->
+<section >
+	  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container">
+      <a class="navbar-brand" href="/">鄉民護航圖</a>
+      <div class="collapse navbar-collapse">
+      </div>
+    </div>
+  </nav>
+</section>
+
+  <div class="container mt-5">
+    <div class="row justify-content-center">
+      <div class="col-md-6">
+        <div class="card shadow-lg">
+          <div class="card-header bg-darkblue text-center">
+            <h4>志工登入</h4>
+          </div>
+          <div class="card-body">
+            <form method="POST" action="{{ url_for('volunteer_login') }}">        
+              <div class="mb-3">
+                <label for="account" class="form-label">帳號</label>
+                <input type="text" class="form-control" id="account" name="account" required>
+              </div>
+              <div class="mb-3">
+                <label for="password" class="form-label">密碼</label>
+                <input type="password" class="form-control" id="password" name="password" required>
+              </div>
+                      {% if error %}
+        <div class="alert alert-danger" role="alert">
+        {{ error }}
+        </div>
+        {% endif %}
+              <button type="submit" class="btn btn-primary w-100">登入</button>
+            </form>
+          </div>
+          <div class="card-footer text-center">
+            <a href="{{ url_for('volunteer_register') }}">尚未註冊？點我註冊</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <footer class="pt-3 pb-3 bg-dark bg-opacity-75 text-white text-center">
+	<p class="mb-0">© 2025 鄉民護航圖：扶奶奶過馬路</p>
+</footer>
+</body>
+</html>
