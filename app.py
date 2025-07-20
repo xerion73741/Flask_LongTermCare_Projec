@@ -6,6 +6,9 @@ from longterm_care_map import create_longtermcare_map
 from functools import wraps
 from volunteers_db import volunteers_db
 from datetime import date, timedelta
+from email.mime.text import MIMEText
+import smtplib 
+import os
 
 app = Flask(__name__)
 app.secret_key = 'Gail secret key'
@@ -30,12 +33,6 @@ def volunteer_login_required(view_func):
         return view_func(*args, **kwargs)
     return wrapper
 
-# 🔸 首頁
-# @app.route('/')
-# def base():
-#         name = request.cookies.get('userName')
-#         volunteer = session.get('volunteer')
-#         return render_template('base.html', userName=name, volunteer=volunteer)
 @app.route('/')
 def base():
     name = request.cookies.get('userName')
@@ -112,9 +109,29 @@ def register():
     except sqlite3.IntegrityError:
         conn.close()
         return render_template('error.html', message="帳號或 Email 已存在", back_url=url_for('register_form'))
-    
     conn.close()
+# --------------- 註冊成功後寄信 --------------------------------------------
+    subject = "長照系統，註冊成功通知"
+    body = f'{name} 您好，\n\n 您已成功註冊長照系統，歡迎您的加入！ \n\n帳號： {user}\n\n 此信件由系統自動發出，請勿回信。'
+    send_mail(to_email=email, subject=subject, body=body)
+
     return redirect('/login')
+# --------------- 寄送註冊信 --------------------------------------------
+def send_mail(to_email, subject, body):
+    from_email = os.getenv("EMAIL_ADDRESS")
+    password = os.getenv("EMAIL_PASSWORD")
+    msg = MIMEText(body, "plain", "utf-8")
+    msg['Subject'] = subject
+    msg["From"] = from_email
+    msg["To"] = to_email
+
+    try:
+        with smtplib.SMTP_SSL('smtp.gmail.com' , 465 ) as stmp:
+            stmp.login(from_email, password)
+            stmp.send_message(msg)
+            print('信件已發送')
+    except Exception as e:
+        print("信件發送失敗",e)
 
 #  登出
 @app.route('/logout')
@@ -123,6 +140,7 @@ def logout():
     resp = make_response(redirect('/login'))
     resp.set_cookie('userName', '', expires=0)
     return resp
+
 
 #--------- 志工登入 --------------------
 @app.route("/volunteer/register", methods=["GET", "POST"])
