@@ -24,10 +24,12 @@
     </div>
 
     {% if message %}
-    <p style="color:red;">{{ message }}</p>
+      {{ message|safe }}
     {% endif %}
 
     {% if map_html %}
+    
+      <div style="width: 100%; height: 500px;">
       {{ map_html | safe }}
     {% endif %}
 

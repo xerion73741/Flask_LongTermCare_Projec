@@ -1,5 +1,6 @@
 import folium
 from longterm_care_db import LongTermCareDB
+from flask import render_template_string
 
 
 def create_longtermcare_map(city, dist):
@@ -15,8 +16,9 @@ def create_longtermcare_map(city, dist):
             'lng': data['longitude'],
         })
 
+    # 空值視為 flase
     if not ltc_list_dict:
-        return "<p style='color:red;'>查無資料，請重新輸入</p>"
+        return None
     
     center_lat = sum([item['lat'] for item in ltc_list_dict]) / len(ltc_list_dict)
     center_lng = sum([item['lng'] for item in ltc_list_dict]) / len(ltc_list_dict)
@@ -30,59 +32,14 @@ def create_longtermcare_map(city, dist):
                 max_width=300)
         ).add_to(m)
     
-
-    return m._repr_html_()
+    return render_template_string(m.get_root().render())
+    
+    # 轉成 html 語法, 會產生<iframe> 標籤, heroku 有時候沒辦法載入
+    # return m._repr_html_()
 
 if __name__ == '__main__':
     city = '高雄市'
     dist = '前金區'
+    
     datas = create_longtermcare_map(city, dist)
 
-#     print('查詢結果: ')
-#     if result.empty: 
-#         # print('附近沒有長照機構')
-#         return '附近沒有長照機構'
-
-#     ltc_list_dict=[]
-#     for index, row in result.iterrows():
-#         print(f"機構名稱：{row['機構名稱']}")
-#         print(f"地址：{row['地址全址']}")
-#         print()
-#         ltc_list_dict.append({
-#             'name': row['機構名稱'],
-#             'address': row['地址全址'],
-#             'lat': row['緯度'],
-#             'lng': row['經度'],
-#         })
-
-#     #print(ltc_list_dict)
-
-#     # -------------------------------------------------------------
-#     center_lat = sum([item['lat'] for item in ltc_list_dict]) / len(ltc_list_dict)
-#     center_lng = sum([item['lng'] for item in ltc_list_dict]) / len(ltc_list_dict)
-
-#     m = folium.Map(location=(center_lat, center_lng), zoom_start=14)
-
-#     for item in ltc_list_dict:
-#         folium.Marker(
-#             location=[item['lat'], item['lng']],
-#             popup=folium.Popup(
-#                 f"機構名稱: {item['name']}<br>地址: {item['address']}",
-#                 max_width=300
-#             )
-            
-#         ).add_to(m)
-
-#     return m
-
-# if __name__ == '__main__':
-#     # 測試用範例，直接給定測試參數
-#     test_city = '123'
-#     test_dist = '123'
-#     result = create_longtermcare_map(test_city, test_dist)
-
-#     if isinstance(result, str):
-#         print(result)  # 輸出錯誤訊息
-#     else:
-#         result.save('test_map.html')  # 儲存地圖檔案方便查看
-#         print('地圖已生成，請打開 test_map.html 查看')

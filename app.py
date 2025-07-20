@@ -124,50 +124,6 @@ def logout():
     resp.set_cookie('userName', '', expires=0)
     return resp
 
-# --------------- 地圖相關 --------------------------------------------
-@app.route('/search', methods=["POST", "GET"])
-@login_required
-def search():
-    name = request.cookies.get('userName')
-
-    if request.method == 'POST':
-        city = request.form.get('city')
-        dist = request.form.get('dist')
-        if not city or not dist:
-            return render_template('search.html', userName=name)
-
-        # 先產生 map_html
-        map_html = create_longtermcare_map(city, dist)
-
-        # 接著檢查 map_html 是不是「查無資料」的訊息
-        if "<p style='color:red;'>查無資料，請重新輸入</p>" in map_html:
-            return render_template('search.html', map_html=map_html, userName=name)
-        else:
-            return render_template('search.html', map_html=map_html, userName=name)
-    # 如果沒有東西進來
-    else:
-        return render_template('search.html', userName=name)
-
-# -----------------新聞相關 ---------------------------
-@app.route("/news", methods=["GET", "POST"]) # 新聞
-@login_required
-def news():
-    # 爬新聞
-    news_list = crawl_news()
-    name = request.cookies.get('userName')
-    # 分頁邏輯
-    per_page = 8 #每頁顯示8筆
-    page = request.args.get("page",1, type=int) # 取得目前第幾頁(預預為第1頁)
-    start = (page-1)*per_page # page-1 是扣除預設的第1頁
-    end = start + per_page
-    total_pages = (len(news_list)+per_page-1) // per_page # 計算總頁數
-    # 傳到news.html 的資料
-    return render_template("news.html", 
-                           news_list=news_list[start:end], 
-                           current_page = page,
-                           total_pages = total_pages,
-                           userName=name)
-
 #--------- 志工登入 --------------------
 @app.route("/volunteer/register", methods=["GET", "POST"])
 def volunteer_register():
@@ -272,8 +228,6 @@ def volunteer_schedule():
             personal_shifts_7=personal_shifts_7
         )
 
-
-
     elif request.method == "POST":
 
         # 先刪除接下來七天的班表
@@ -293,10 +247,65 @@ def volunteer_schedule():
 
         return redirect(url_for('volunteer_schedule'))
 
+# -----------------新聞相關 ---------------------------
+@app.route("/news", methods=["GET", "POST"]) # 新聞
+@login_required
+def news():
+    # 爬新聞
+    news_list = crawl_news()
+    name = request.cookies.get('userName')
+    # 分頁邏輯
+    per_page = 8 #每頁顯示8筆
+    page = request.args.get("page",1, type=int) # 取得目前第幾頁(預預為第1頁)
+    start = (page-1)*per_page # page-1 是扣除預設的第1頁
+    end = start + per_page
+    total_pages = (len(news_list)+per_page-1) // per_page # 計算總頁數
+    # 傳到news.html 的資料
+    return render_template("news.html", 
+                           news_list=news_list[start:end], 
+                           current_page = page,
+                           total_pages = total_pages,
+                           userName=name)
 
+
+
+# --------------- 地圖相關 --------------------------------------------
+@app.route('/search', methods=["POST", "GET"])
+@login_required
+def search():
+    name = request.cookies.get('userName')
+
+    if request.method == 'POST':
+        city = request.form.get('city')
+        dist = request.form.get('dist')
+        if not city or not dist:
+            return render_template('search.html', userName=name)
+
+        # 先產生 map_html
+        map_html = create_longtermcare_map(city, dist)
+        # 接著檢查 map_html 是不是「查無資料」的訊息
+        if map_html is None:
+            message = "<p style='color:red;'>查無資料, 請重新輸入</p>"
+            return render_template('search.html', message=message, userName=name, )
+        else:
+            print(map_html[:300])
+            return render_template('search.html', map_html=map_html, userName=name)
+    # 如果沒有東西進來
+    else:
+        return render_template('search.html', userName=name)
+
+
+# 測試用
+@app.route('/testmap')
+def test_map():
+    city='高雄市'
+    dist='前金區'
+    map_html = create_longtermcare_map(city, dist)
+    return map_html
 
 if __name__ == '__main__':
     # 這段程式碼只在您直接運行 app.py 時執行，例如在本地開發時
     import os
     port = int(os.environ.get("PORT", 5000))
     app.run(host='0.0.0.0', port=port, debug=True, use_reloader=True)
+
