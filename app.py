@@ -110,12 +110,16 @@ def register():
         conn.close()
         return render_template('error.html', message="帳號或 Email 已存在", back_url=url_for('register_form'))
     conn.close()
+
+
 # --------------- 註冊成功後寄信 --------------------------------------------
     subject = "長照系統，註冊成功通知"
     body = f'{name} 您好，\n\n 您已成功註冊長照系統，歡迎您的加入！ \n\n帳號： {user}\n\n 此信件由系統自動發出，請勿回信。'
     send_mail(to_email=email, subject=subject, body=body)
 
     return redirect('/login')
+
+
 # --------------- 寄送註冊信 --------------------------------------------
 def send_mail(to_email, subject, body):
     from_email = os.getenv("EMAIL_ADDRESS")
@@ -215,6 +219,8 @@ def volunteer_logout():
         resp = make_response(redirect(url_for('base')))
         resp.set_cookie('userName', '', expires=0)  # 清除 cookie
         return resp 
+
+
 #---------- 志工班表 -------------------------
 @app.route('/volunteer/schedule', methods = ["GET", "POST"])
 @volunteer_login_required
@@ -265,6 +271,7 @@ def volunteer_schedule():
 
         return redirect(url_for('volunteer_schedule'))
 
+
 # -----------------新聞相關 ---------------------------
 @app.route("/news", methods=["GET", "POST"]) # 新聞
 @login_required
@@ -284,7 +291,6 @@ def news():
                            current_page = page,
                            total_pages = total_pages,
                            userName=name)
-
 
 
 # --------------- 地圖相關 --------------------------------------------
