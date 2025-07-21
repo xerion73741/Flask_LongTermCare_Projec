@@ -9,6 +9,7 @@ from datetime import date, timedelta
 from email.mime.text import MIMEText
 import smtplib 
 import os
+from service import get_carecenter_data
 
 app = Flask(__name__)
 app.secret_key = 'Gail secret key'
@@ -274,7 +275,7 @@ def volunteer_schedule():
 
 # -----------------新聞相關 ---------------------------
 @app.route("/news", methods=["GET", "POST"]) # 新聞
-@login_required
+# @login_required 要先登入  才能進入news的頁面
 def news():
     # 爬新聞
     news_list = crawl_news()
@@ -326,6 +327,14 @@ def test_map():
     dist='前金區'
     map_html = create_longtermcare_map(city, dist)
     return map_html
+# --------------- 各縣市長照線上申請---------------------------------------
+# 加上request.args.get()判斷搜尋關鍵字
+@app.route("/service")
+def service():
+    data = get_carecenter_data()
+    return render_template('service.html', centers = data)
+
+
 
 if __name__ == '__main__':
     # 這段程式碼只在您直接運行 app.py 時執行，例如在本地開發時

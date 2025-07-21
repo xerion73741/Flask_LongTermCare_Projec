@@ -36,15 +36,15 @@ img{
   padding-bottom: 1rem;
 }
 .news-img{
-  height: 100%;
+  max-height: 200px;
   width: 100%;
   object-fit: cover;
   border-radius: 6px;
   box-shadow: 0 2px 6px rgba(0,0,0,0.1);
 }
 .mews-title{
-  align-items: start;
-  color: #343a40;
+  text-decoration: underline;
+  color: #00509e;
 
 }
 .news-context{
@@ -52,4 +52,52 @@ img{
   margin-top: 0.5rem;
   color: #003366;
 }
+table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0 12px; /* 垂直間距12px，水平無間距 */
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: #f9f9f9;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  border-radius: 8px;
+  overflow: hidden;
+}
 
+th, td {
+  padding: 12px 15px;
+  text-align: center;
+  background: white;
+  border-bottom: 1px solid #ddd;
+  color: #003366;
+}
+
+th {
+  background-color: #003366;
+  color:  white;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+tr:hover td {
+  background-color: #e6f0ff;
+  transition: background-color 0.3s ease;
+}
+
+tbody tr:last-child td {
+  border-bottom: none;
+}
+.tighter-list{
+  margin-left: 0;
+  padding-left: 1rem;
+  list-style-position: inside;
+  margin-left: -6px
+}
+.service {
+  margin: 0 auto;
+  max-width: 80%;
+  text-align: center;
+  padding: 5px;              /* 建議加點內距讓內容不會太貼邊 */
+  border-radius: 8px;         /* 圓角：讓外觀更柔和 */
+  color: #003366; 
+}

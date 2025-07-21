@@ -6,3 +6,5 @@ pandas
 ipykernel
 folium
 gunicorn
+auth
+service

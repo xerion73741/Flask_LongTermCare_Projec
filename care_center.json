@@ -1,0 +1,159 @@
+{
+  "date": "2025-07-22",
+  "data": [
+    {
+      "center": "臺北市照管中心",
+      "center_urls": "https://health.gov.taipei/Default.aspx?tabid=879",
+      "TEL": "02-2537-1099",
+      "apply": "線上申請連結",
+      "apply_urls": "https://ltc.health.gov.tw/tplcPublic/front/onlineService"
+    },
+    {
+      "center": "新北市照管中心",
+      "center_urls": "https://www.health.ntpc.gov.tw/basic/?node=10622",
+      "TEL": "02-2968-3331",
+      "apply": "線上申請連結",
+      "apply_urls": "https://service.ntpc.gov.tw/eservice/Ac124014.action"
+    },
+    {
+      "center": "桃園市照管中心",
+      "center_urls": "https://care.tycg.gov.tw/cp.aspx?n=5786",
+      "TEL": "033-340-935",
+      "apply": "線上申請連結",
+      "apply_urls": "https://ltc.tycg.gov.tw/tylcPublic/apply/index"
+    },
+    {
+      "center": "新竹市照管中心",
+      "center_urls": "https://ltc.hccg.gov.tw/newhcchb/index",
+      "TEL": "035-355-191",
+      "apply": "線上申請連結",
+      "apply_urls": "https://dgservice.hccg.gov.tw/serviceNotice.do?rule=guest&id=1193"
+    },
+    {
+      "center": "新竹縣照管中心",
+      "center_urls": "https://longcare.hsinchu.gov.tw/",
+      "TEL": "035-518-101",
+      "apply": "線上申請連結",
+      "apply_urls": "https://eservices.hsinchu.gov.tw/People/Agree/81/202312012/A376440304?MyData=0"
+    },
+    {
+      "center": "苗栗縣照管中心",
+      "center_urls": "https://longcare.miaoli.gov.tw/default.aspx?404;https://longcare.miaoli.gov.tw:80/longcare/",
+      "TEL": "1966(長照業務)、037-558-080(衛生局)",
+      "apply": "線上申請連結",
+      "apply_urls": "https://longcare.miaoli.gov.tw/ApplyForm.aspx?n=2328&sms=11627"
+    },
+    {
+      "center": "臺中市照管中心",
+      "center_urls": "https://www.health.taichung.gov.tw/1614263/Normalnodelist",
+      "TEL": "04-2515-2888",
+      "apply": "線上申請連結",
+      "apply_urls": "https://eservices.taichung.gov.tw/assortBusines/Agree/149/Application/140518/140032"
+    },
+    {
+      "center": "彰化縣照管中心",
+      "center_urls": "https://care.nccu.idv.tw/",
+      "TEL": "04-7278503",
+      "apply": "線上申請連結",
+      "apply_urls": "https://edesk.chcg.gov.tw/eservice/apply_mode_directions2?itemId=116"
+    },
+    {
+      "center": "臺南市照管中心",
+      "center_urls": "https://ltc.tainan.gov.tw/",
+      "TEL": "062-931-232",
+      "apply": "線上申請連結",
+      "apply_urls": "https://onestop.tainan.gov.tw/eservice/apply_mode_directions2?itemId=3074"
+    },
+    {
+      "center": "南投縣照管中心",
+      "center_urls": "https://www.ntshb.gov.tw/form/Details?Parser=2,7,138,64,,,195",
+      "TEL": "049-2222-473",
+      "apply": "線上申請連結",
+      "apply_urls": "https://eservice.nantou.gov.tw/eservice/apply_mode_directions2?itemId=145"
+    },
+    {
+      "center": "雲林縣照管中心",
+      "center_urls": "https://ylshb.yunlin.gov.tw/",
+      "TEL": "05-5352-880",
+      "apply": "線上申請連結",
+      "apply_urls": "https://eservice.yunlin.gov.tw/ApplyCase/Agree/187/201907137/500249"
+    },
+    {
+      "center": "嘉義縣照管中心",
+      "center_urls": "https://ltccenter.cyhg.gov.tw/",
+      "TEL": "053-625-750",
+      "apply": "線上申請連結",
+      "apply_urls": "https://eservice.cyhg.gov.tw/eservice/apply_mode_directions2?itemId=62"
+    },
+    {
+      "center": "嘉義市照管中心",
+      "center_urls": "https://longcare.chiayi.gov.tw/",
+      "TEL": "052-336-889",
+      "apply": "線上申請連結",
+      "apply_urls": "https://ltc.cichb.gov.tw/General/Services/Apply/"
+    },
+    {
+      "center": "高雄市照管中心",
+      "center_urls": "https://ltc.kchb.gov.tw/",
+      "TEL": "077-131-500",
+      "apply": "線上申請連結",
+      "apply_urls": "https://ltc.kchb.gov.tw/apply"
+    },
+    {
+      "center": "屏東縣照管中心",
+      "center_urls": "https://www.pthg.gov.tw/care/Default.aspx",
+      "TEL": "087-662-900",
+      "apply": "線上申請連結",
+      "apply_urls": "https://onestop.pthg.gov.tw/eservice/apply_mode_directions2?itemId=761"
+    },
+    {
+      "center": "基隆市照管中心",
+      "center_urls": "https://www.klchb.klcg.gov.tw/tw/klchb/1373.html",
+      "TEL": "02-2434-0234",
+      "apply": "線上申請連結",
+      "apply_urls": "https://docs.google.com/forms/d/e/1FAIpQLSeHYUqcKdkXW2Kp2owiQ7xuJaASFmntFGm10JwhF9ZpnGZMhw/viewform"
+    },
+    {
+      "center": "宜蘭縣照管中心",
+      "center_urls": "https://ltc.ilshb.gov.tw/",
+      "TEL": "039-359-990",
+      "apply": "線上申請連結",
+      "apply_urls": "https://ltc.ilshb.gov.tw/online/confirm"
+    },
+    {
+      "center": "花蓮縣照管中心",
+      "center_urls": "http://long-term.hlshb.gov.tw/",
+      "TEL": "038-226-889",
+      "apply": "線上申請連結",
+      "apply_urls": "https://docs.google.com/forms/d/e/1FAIpQLScPS2KXzrqVsvJp5YKGGCN-BgycW4YkoEcX5ZTZ2Qd6aCNtUA/viewform"
+    },
+    {
+      "center": "臺東縣照管中心",
+      "center_urls": "http://ttshbltc.ttshb.gov.tw/",
+      "TEL": "089-330-068",
+      "apply": "線上申請連結",
+      "apply_urls": "https://ttshbltc.ttshb.gov.tw/eapp"
+    },
+    {
+      "center": "澎湖縣照管中心",
+      "center_urls": "https://event.penghu.gov.tw/longcare/",
+      "TEL": "06-9267-242",
+      "apply": "線上申請連結",
+      "apply_urls": "https://eservice.penghu.gov.tw/Service_Content.aspx?n=8C0F99E427E0C218&d=A0D457D337C0E5C3ADF955EA39A5AD9ED15A0DF4BF8C5127368B99BBDE61E5D92D26922E02E001FF&s=ED0B1DE2067E9B78"
+    },
+    {
+      "center": "金門縣照管中心",
+      "center_urls": "https://longtermcare.kinmen.gov.tw/default.asp",
+      "TEL": "082-334-228",
+      "apply": "線上申請連結",
+      "apply_urls": "https://longtermcare.kinmen.gov.tw/apply.asp"
+    },
+    {
+      "center": "連江縣照管中心",
+      "center_urls": "https://www.matsuhb.gov.tw/Chhtml/content/345?webaid=9",
+      "TEL": "083-622-095 #8830~8839",
+      "apply": "線上申請連結",
+      "apply_urls": "https://www.matsuhb.gov.tw/Chhtml/careservice/2286?webaid=9"
+    }
+  ]
+}

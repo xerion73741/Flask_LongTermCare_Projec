@@ -1,0 +1,42 @@
+
+{% extends "base.html" %}
+	<link rel="stylesheet" href="../static/css/bootstrap.css">
+	<link rel="stylesheet" href="../static/css/style.css">
+
+{% block title %}各縣市長照線上申請{% endblock title %}
+
+{% block content %}
+<body>
+    <section>
+	<div class="container">
+    <h4 class="text-darkblue mt-4"> 各縣市長照線上申請 </h4>
+ <!-- 📋 資料表格 -->
+    <div class="service">
+      <table>
+        <thead >
+          <tr>
+            <th>照管中心</th>
+            <th>電話</th>
+            <th>線上申請</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for item in centers %}
+          <tr>
+            <td class = "text-darkblue text-center"><a href="{{ item.center_urls }}" target="_blank">{{ item.center }}</a></td>
+            <td>{{ item.TEL }}</td>
+            <td class = "text-darkblue text-center"><a href="{{ item.apply_urls }}" target="_blank">{{ item.apply }}</a></td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+    <span class="p-4">取自：<a href="https://1966.gov.tw/LTC/cp-6443-69944-207.html" target="_blank" rel="noopener noreferrer">衛福部長期照顧</a></span>
+  </div>
+ 
+</body>
+</section>
+  {% endblock content %}
+  <script src="{{ url_for('static', filename='js/bootstrap.bundle.min.js') }}"></script>
+  <script src="/static/js/bootstrap.bundle.min.js"></script>
