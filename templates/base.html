@@ -68,6 +68,12 @@
   <ul class="lh-lg text-start px-3 list-unstyled">
     {% for title, link in top5_news %}
       <li class="mb-2">
+        <a href="{{ url_for('news') }}" class="news-link d-block text-truncate" style="max-width: 100%;">{{ title }}</a>
+      </li>
+    {% endfor %}
+  <ul class="lh-lg text-start px-3 list-unstyled">
+    {% for title, link in top5_news %}
+      <li class="mb-2">
         <a href="{{ url_for('news') }}" target="_blank" class="news-link d-block text-truncate" style="max-width: 100%;">
           {{ title }}
         </a>
