@@ -204,9 +204,13 @@ def volunteer_login():
             return render_template('volunteer_login.html', error=error, account=account)
 
         # 登入成功
+        # 志工 id
         session["volunteer_id"] = user["id"]
+        # 志工 name
         session["volunteer"] = user["name"]
+        # 志工登入
         session['volunteer_logined'] = "1"
+        # user 登入
         session['logined'] = "1"
         return redirect(url_for("base"))
     
