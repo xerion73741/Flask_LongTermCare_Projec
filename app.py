@@ -287,6 +287,7 @@ def news():
     # 爬新聞
     news_list = get_crawler_news()
     name = request.cookies.get('userName')
+    volunteer = session.get('volunteer')
     # 分頁邏輯
     per_page = 8 #每頁顯示8筆
     page = request.args.get("page",1, type=int) # 取得目前第幾頁(預預為第1頁)
@@ -298,7 +299,9 @@ def news():
                            news_list=news_list[start:end], 
                            current_page = page,
                            total_pages = total_pages,
-                           userName=name)
+                           userName=name,
+                           volunteer=volunteer,
+                           )
 
 
 # --------------- 地圖相關 --------------------------------------------
@@ -326,7 +329,6 @@ def search():
     else:
         return render_template('search.html', userName=name)
 
-
 # # 測試用
 # @app.route('/testmap')
 # def test_map():
@@ -336,10 +338,15 @@ def search():
 #     return map_html
 # --------------- 各縣市長照線上申請---------------------------------------
 # 加上request.args.get()判斷搜尋關鍵字
+
 @app.route("/service")
 def service():
-    data = get_carecenter_data()
-    return render_template('service.html', centers = data)
+# -- 給他快取, render 也要回傳, html 才判斷的到
+    userName = request.cookies.get('userName') 
+    volunteer = session.get("volunteer")  
+# ----------------------------------------
+    data = get_carecenter_data()                                
+    return render_template('service.html', centers = data, userName=userName, volunteer=volunteer)
 
 
 
