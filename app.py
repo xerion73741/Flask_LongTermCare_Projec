@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, redirect, make_response, session, url_for
 import sqlite3
 import re  # for email validation
-from crawler import crawl_news
+from crawler import get_crawler_news
 from longterm_care_map import create_longtermcare_map
 from functools import wraps
 from volunteers_db import volunteers_db
@@ -228,15 +228,16 @@ def volunteer_logout():
 def volunteer_schedule():
     # 用 get 取 session 即使沒有這個 session = None 也不會報錯 
     volunteer_id = session.get("volunteer_id")
+    volunteer = session.get("volunteer") ###########
     db = volunteers_db()
 
     if request.method == "GET":
-        shifts_7 = db.get_shifts_grouped_by_date_time()  # 這裡改用新的函式
+        shifts_7 = db.get_shifts_grouped_by_date_time()  
         personal_shifts_7 = db.get_all_shifts() 
         personal_shifts = db.query_personal_shifts(volunteer_id)
         today = date.today()
         week_map = ['日', '一', '二', '三', '四', '五', '六']
-        start = today.weekday()  # 這裡你打錯變數名稱了，原本是 stert
+        start = today.weekday()  
         # 注意 weekday() 回傳 0 是週一，所以要調整星期順序讓日對齊
         # 將週一(0)轉換成星期陣列中正確的索引(1)
         # 用 (start + 1) % 7 來調整日(星期天)是第一個元素
@@ -250,7 +251,9 @@ def volunteer_schedule():
             today=today,
             week=week,
             timedelta=timedelta,
-            personal_shifts_7=personal_shifts_7
+            personal_shifts_7=personal_shifts_7,
+            volunteer=volunteer ########
+            
         )
 
     elif request.method == "POST":
@@ -278,7 +281,7 @@ def volunteer_schedule():
 # @login_required 要先登入  才能進入news的頁面
 def news():
     # 爬新聞
-    news_list = crawl_news()
+    news_list = get_crawler_news()
     name = request.cookies.get('userName')
     # 分頁邏輯
     per_page = 8 #每頁顯示8筆
@@ -296,7 +299,7 @@ def news():
 
 # --------------- 地圖相關 --------------------------------------------
 @app.route('/search', methods=["POST", "GET"])
-@login_required
+# @login_required
 def search():
     name = request.cookies.get('userName')
 
@@ -320,13 +323,13 @@ def search():
         return render_template('search.html', userName=name)
 
 
-# 測試用
-@app.route('/testmap')
-def test_map():
-    city='高雄市'
-    dist='前金區'
-    map_html = create_longtermcare_map(city, dist)
-    return map_html
+# # 測試用
+# @app.route('/testmap')
+# def test_map():
+#     city='高雄市'
+#     dist='前金區'
+#     map_html = create_longtermcare_map(city, dist)
+#     return map_html
 # --------------- 各縣市長照線上申請---------------------------------------
 # 加上request.args.get()判斷搜尋關鍵字
 @app.route("/service")
