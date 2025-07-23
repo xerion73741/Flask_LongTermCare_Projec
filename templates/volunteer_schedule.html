@@ -48,28 +48,24 @@
 	<div class="container">
     <h4 class="text-darkblue mb-4">{% block title %}志工班表{% endblock title %}</h4>
 {% block content %}
-{% set week_map = ['一', '二', '三', '四', '五', '六', '日'] %}
-{% set start = today.weekday() %}
-{% set week = week_map[start:] + week_map[:start] %}
 {% if shifts_7 %}
 <table border="1" class="table table-bordered text-center">
   <thead>
     <tr>
-      <th>時段＼星期</th>
-      {% for i in range(7) %}
-        <th>{{ (today + timedelta(days=i)).strftime('%m/%d') }}<br>{{ week[i] }}</th>
+      <th>時段＼日期</th>
+      {% for d, w in dates_with_week %}
+        <th>{{ d.strftime('%m/%d') }}<br>{{ w }}</th>
       {% endfor %}
     </tr>
   </thead>
   <tbody>
-    {% for shift_time in ['早班', '午班', '晚班', '大夜', '休假'] %}
+    {% for shift_time in ['早班', '中班', '晚班', '大夜'] %}
     <tr>
       <td><strong>{{ shift_time }}</strong></td>
-      {% for i in range(7) %}
-      
-        {% set date_key = (today + timedelta(days=i)).isoformat() %}
+      {% for d, w in dates_with_week %}
+        {% set date_key = d.isoformat() %}
+        {% set names = shifts_7.get(date_key, {}).get(shift_time, []) %}
         <td>
-          {% set names = shifts_7.get(date_key, {}).get(shift_time, []) %}
           {% if names %}
             {{ names | join('<br>') | safe }}
           {% else %}
@@ -81,6 +77,7 @@
     {% endfor %}
   </tbody>
 </table>
+
 {% else %}
   <p>目前沒有任何班表資料。</p>
 {% endif %}
@@ -88,11 +85,10 @@
 <br>
 
 <form method="POST" action="{{ url_for('volunteer_schedule') }}">
-  {% set week = ['日', '一', '二', '三', '四', '五', '六'] %}
   {% for i in range(7) %}
   <div class='mb-3'>
     <label for="status_{{ i }}" class="form-label" style="display: block; background-color: #99ccff ;">
-      星期{{ week[i] }}排班狀態:
+      星期{{ week_map[i] }}排班狀態:
     </label>      
     <select class="form-select" id="status_{{ i }}" name="status_{{ i }}">
       <option value="早班">早班</option>

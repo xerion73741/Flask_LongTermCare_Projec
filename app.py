@@ -237,47 +237,65 @@ def volunteer_schedule():
 
     if request.method == "GET":
         shifts_7 = db.get_shifts_grouped_by_date_time()  
-        personal_shifts_7 = db.get_all_shifts() 
-        personal_shifts = db.query_personal_shifts(volunteer_id)
-        today = date.today()
         week_map = ['日', '一', '二', '三', '四', '五', '六']
-        start = today.weekday()  
-        # 注意 weekday() 回傳 0 是週一，所以要調整星期順序讓日對齊
-        # 將週一(0)轉換成星期陣列中正確的索引(1)
-        # 用 (start + 1) % 7 來調整日(星期天)是第一個元素
-        adjusted_start = (start + 1) % 7
-        week = week_map[adjusted_start:] + week_map[:adjusted_start]
-
+        today = date.today()
+        # 計算今天離周日是第幾天 today.weekday() 周日是0
+        days_since_sunday = (today.weekday() + 1) % 7  
+        # timedelta 將參數轉乘時間格式
+        # 今日扣去與周日的時間差, 便可以找到周日(0)
+        # 找出 周日的日期
+        sunday = today - timedelta(days=days_since_sunday) 
+        # 動態產生: index(0)為周日的日期序列
+        # ['2025-07-20','2025-07-21'...]
+        dates = [sunday + timedelta(days=i) for i in range(7)]
+        # [ (datetime.date(2025, 7, 20), '日'),.......]
+        dates_with_week = [(d, week_map[(d.weekday() + 1) % 7]) for d in dates]
         return render_template(
-            "volunteer_schedule.html",
-            personal_shifts=personal_shifts,
+            'volunteer_schedule.html',
             shifts_7=shifts_7,
-            today=today,
-            week=week,
-            timedelta=timedelta,
-            personal_shifts_7=personal_shifts_7,
-            volunteer=volunteer ########
-            
+            dates_with_week=dates_with_week,
+            volunteer_id=volunteer_id,
+            volunteer=volunteer,
+            days_since_sunday=days_since_sunday,
+            week_map=week_map,
         )
 
-    elif request.method == "POST":
 
-        # 先刪除接下來七天的班表
+
+        # adjusted_start = (start + 1) % 7
+        # week = week_map[adjusted_start:] + week_map[:adjusted_start]
+        # return render_template(
+        #     "volunteer_schedule.html",
+        #     personal_shifts=personal_shifts,
+        #     shifts_7=shifts_7,
+        #     today=today,
+        #     timedelta=timedelta,
+        #     personal_shifts_7=personal_shifts_7,
+        #     volunteer=volunteer ########
+        # )
+
+    elif request.method == "POST":
+        today = date.today()
+        days_since_sunday = (today.weekday() + 1) % 7
+        sunday = today - timedelta(days=days_since_sunday)
+
+        # 先刪除本週日開始連續七天的班表
         for i in range(7):
-            shift_date = (date.today() + timedelta(days=i)).isoformat()
+            shift_date = (sunday + timedelta(days=i)).isoformat()
             db.delete_shifts_for_date(volunteer_id, shift_date)
 
-        # 插入
+        # 插入新班表
         for i in range(7):
             status = request.form.get(f'status_{i}')
             note = request.form.get(f'note_{i}')
-            shift_date = (date.today() + timedelta(days=i)).isoformat()
-            shift_time = status  # 若 status 就是班別資料，這樣設沒問題
+            shift_date = (sunday + timedelta(days=i)).isoformat()
+            shift_time = status
 
             if status:
                 db.insert_shifts(volunteer_id, shift_date, shift_time, note)
 
         return redirect(url_for('volunteer_schedule'))
+
 
 
 # -----------------新聞相關 ---------------------------
@@ -329,13 +347,7 @@ def search():
     else:
         return render_template('search.html', userName=name)
 
-# # 測試用
-# @app.route('/testmap')
-# def test_map():
-#     city='高雄市'
-#     dist='前金區'
-#     map_html = create_longtermcare_map(city, dist)
-#     return map_html
+
 # --------------- 各縣市長照線上申請---------------------------------------
 # 加上request.args.get()判斷搜尋關鍵字
 
@@ -347,7 +359,6 @@ def service():
 # ----------------------------------------
     data = get_carecenter_data()                                
     return render_template('service.html', centers = data, userName=userName, volunteer=volunteer)
-
 
 
 if __name__ == '__main__':

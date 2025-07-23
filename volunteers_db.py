@@ -200,6 +200,7 @@ class volunteers_db:
 
         # 所有班表前七日查詢
     def get_shifts_grouped_by_date_time(self):
+        # 2025-07-23
         today = date.today()
         end_date = today + timedelta(days=6)
 
@@ -211,12 +212,21 @@ class volunteers_db:
                 JOIN volunteers v ON s.volunteer_id = v.id
                 WHERE s.shift_date BETWEEN ? AND ?
             ''', (today.isoformat(), end_date.isoformat()))
+                # isoformat 將 date 物件轉成國際標準格式
             rows = cursor.fetchall()
 
+        # defaultdict(list): 
+        # 使用不存在的 key 取值時, 會生成空的 list
         shifts = defaultdict(lambda: defaultdict(list))
         for row in rows:
             shifts[row['shift_date']][row['shift_time']].append(row['name'])
-
+            
+        # shifts = {
+        # '2025-07-23': {
+        #     '早': ['小明', '小美'],
+        #     '晚': ['阿翔']
+        # }
+        # }
         return shifts
 
 
@@ -228,8 +238,8 @@ if __name__ == '__main__':
     # print(shift_7)
 
     # 所有班表前七日
-    shifts_7 = db.get_shifts_grouped_by_date_time()
-    print(len(shifts_7))
+    # shifts_7 = db.get_shifts_grouped_by_date_time()
+    # print(len(shifts_7))
     
     # db.insert_volunteers('藍藍', 'blue', '1234', '新北市', 'blue@blue.com', '1234')
     # print(db.query_volunteers())
