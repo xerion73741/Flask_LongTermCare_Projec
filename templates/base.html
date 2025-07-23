@@ -48,50 +48,72 @@
   </div>
 </nav>
 </section>
-<!-- 推薦課程/結束 -->
+<!-- 選單按鈕 結束 -->
 <section class = "container bg-white">
 	<div class="p-2 bg-info">
 			<p>現在時間：<span id="current-time"></span></p>
 			<h3 class="text-darkblue text-center"><strong>長照服務平台</strong></h3>
 			</div>
   </section>
-  <section class = "container">
-	<div class= "row pt-3">
+  <section class="container">
+  <div class="row pt-3">
 
-		<div class="col-md-4 text-center bg-body shadow rounded"> <!-- 把 text-center 放在div 最外層這樣下方的 h3 p 標籤內的文字都會置中-->
-			<h3 class="text-darkblue">服務項目</h3> <!--strong 這是css 內建讓粗體的寫法-->
-      <p class="lh-lg"><a href="{{ url_for('search') }}">查詢各地長照中心位置</a></p>
-      <p class="lh-lg"><a href="{{ url_for('service') }}">長照線上申請</a></p>
-		</div>
-	<div class="col-md-4 text-center bg-body shadow rounded">
-  <h3 class="text-darkblue">長照新聞</h3>
-  <ul class="lh-lg text-start px-3 list-unstyled">
-    {% for title, link in top5_news %}
-      <li class="mb-2">
-        <a href="{{ url_for('news') }}" class="news-link d-block text-truncate" style="max-width: 100%;">{{ title }}</a>
-      </li>
-    {% endfor %}
-  <ul class="lh-lg text-start px-3 list-unstyled">
-    {% for title, link in top5_news %}
-      <li class="mb-2">
-        <a href="{{ url_for('news') }}" target="_blank" class="news-link d-block text-truncate" style="max-width: 100%;">
-          {{ title }}
-        </a>
-      </li>
-    {% endfor %}
-  </ul>
-  <div class="text-end px-3 pb-2">
-    <a href="{{ url_for('news') }}" class="btn btn-primary btn-sm">更多新聞</a>
+    <!-- 🔹 第一張卡片：服務項目 -->
+    <div class="col-md-4 mb-4">
+      <div class="card shadow h-100 text-center">
+        <!-- 卡片內部 -->
+        <div class="card-body">
+          <h3 class="card-title text-darkblue">服務項目</h3>
+          <!-- lh-lg 是 Bootstrap 的行高，讓內文不擁擠 -->
+          <p class="card-text lh-lg">
+            <a href="{{ url_for('search') }}">查詢各地長照中心位置</a>
+          </p>
+          <p class="card-text lh-lg">
+            <a href="{{ url_for('service') }}">長照線上申請</a>
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- 🔹 第二張卡片：長照新聞 -->
+    <div class="col-md-4 mb-4">
+      <div class="card shadow h-100 text-center">
+        <div class="card-body">
+          <h3 class="card-title text-darkblue">長照新聞</h3>
+          <ul class="lh-lg text-start px-3">
+            {% for title, link in top5_news %}
+            <li class="mb-2 card-text">
+              <!-- d-block：讓整個區塊都可點擊；text-truncate：長標題會省略號 -->
+              <a href="{{ url_for('news') }}" class="news-link d-block text-truncate" ">
+                {{ title }}
+              </a>
+            </li>
+            {% endfor %}
+          </ul>
+          <div class="text-end px-3 pb-2">
+            <a href="{{ url_for('news') }}" class="btn btn-primary btn-sm">更多新聞</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 🔹 第三張卡片：關於我們 -->
+    <div class="col-md-4 mb-4">
+      <div class="card shadow h-100 text-center">
+        <div class="card-body">
+          <h3 class="card-title text-darkblue">關於我們</h3>
+          <p class="card-text lh-lg">
+            <a href="{{ url_for('volunteer_register') }}">志工註冊</a>
+          </p>
+          <p class="card-text lh-lg">
+            <a href="{{ url_for('volunteer_schedule') }}">班表</a>
+          </p>
+        </div>
+      </div>
+    </div>
   </div>
-</div>
-		<div class="col-md-4 text-center bg-body shadow rounded">
-			<h3 class="text-darkblue">關於我們</h3>
-			<p class="lh-lg"><a href="{{ url_for('volunteer_register') }}">志工註冊</a></p>
-      <p class="lh-lg"><a href="{{ url_for('volunteer_schedule') }}">班表</a></p>
-		</div >
-
-	</div>
 </section>
+
         {% block content %}{% endblock content %}
   <footer class="pt-3 pb-3 bg-dark bg-opacity-75 text-white text-center">
 	<p class="mb-0">© 2025 鄉民護航圖：扶奶奶過馬路</p>

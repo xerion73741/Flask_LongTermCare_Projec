@@ -11,15 +11,7 @@ img{
     height: 200px;
   }
 }
-.center {
-  margin: 0 auto;
-  max-width: 800px;
-  text-align: center;
-  background-color: #003366; /* 深藍色 */
-  padding: 20px;              /* 建議加點內距讓內容不會太貼邊 */
-  border-radius: 8px;         /* 圓角：讓外觀更柔和 */
-  color: white; 
-}
+
 .text-darkblue {
   color: #003366;
 }
@@ -100,4 +92,24 @@ tbody tr:last-child td {
   padding: 5px;              /* 建議加點內距讓內容不會太貼邊 */
   border-radius: 8px;         /* 圓角：讓外觀更柔和 */
   color: #003366; 
+}
+.card-title {
+  font-weight: bold;
+}
+
+.card-text a {
+  text-decoration: none;
+  color: #003366;
+}
+
+.card-text a:hover {
+  color: #336699;
+  text-decoration: underline;
+}
+.card-text {
+  font-size: 0.95rem;
+  color: #003366;
+}
+.card-header-text {
+  color: #003366;
 }

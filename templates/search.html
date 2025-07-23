@@ -9,18 +9,22 @@
     <div class="row justify-content-center">
       <div class="col-md-12">
         <div class="card shadow">
-          <div class="card-header text-white text-center">
-            <form class="center" method="post" action="/search">
+          <div class="card-header text-center">
+            <form  method="post" action="/search">
               <h4 class="fw-bolder">請輸入住址資訊</h4>
               <label style="display:inline-block; width: 70px;">縣市:</label>
               <input name="city" size="20">
               <label style="display:inline-block; width: 70px;">行政區:</label>
               <input name="dist" size="20"><br>
               <button type="submit" class="center mt-2">查詢</button>
-            </form>
+              <div class="text-end px-3 pb-2">
+            <a href="https://addressrs.moi.gov.tw/address/#" target="_blank" class="btn btn-primary btn-sm">查詢各縣市/行政區</a>
+          </div>
+            </form>  
           </div>
         </div>
      </div>
+<p><small>取自：<a href="https://addressrs.moi.gov.tw/address/#" target="_blank" rel="noopener noreferrer">內政部-門牌地址地圖</a></small></p>
     </div>
 
     {% if message %}
@@ -36,3 +40,5 @@
   </div>
 </section>
 {% endblock content %}
+  <script src="{{ url_for('static', filename='js/bootstrap.bundle.min.js') }}"></script>
+  <script src="/static/js/bootstrap.bundle.min.js"></script>
