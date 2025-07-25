@@ -9,7 +9,6 @@
   <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.css') }}">
   <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
   <script src="{{ url_for('static', filename='js/bootstrap.bundle.min.js') }}"></script>
-  <script src="{{ url_for('static', filename='js/bootstrap.bundle.min.js') }}"></script>
 
 </head>
 <body>
@@ -24,13 +23,13 @@
   <div class="container">
     <a class="navbar-brand" href="/">鄉民護航圖</a>
     
-    <!-- ✅ 新增漢堡選單按鈕 -->
+    <!--  新增漢堡選單按鈕 -->
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent"
       aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
 
-    <!-- ✅ 加上 id 讓 toggler 抓得到 -->
+    <!--  加上 id 讓 toggler 抓得到 -->
     <div class="collapse navbar-collapse" id="navbarContent">
       <ul class="navbar-nav ms-auto">
         {% if volunteer %}
