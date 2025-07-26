@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+{% block title %}健康計算機{% endblock %}
+{% block content %}
+
+<section class="py-4">
+  <div class="container">
+    <div class="row">
+      <!-- BMI 表單 -->
+      <div class="col-md-5">
+        <div class="card shadow mb-4">
+          <div class="card-header text-center">
+            <h4>BMI 計算</h4>
+          </div>
+          <div class="card-body">
+            <form method="POST">
+              <input type="hidden" name="form_type" value="bmi">
+              <div class="mb-3">
+                <label>身高 (cm):</label>
+                <input type="number"step="0.1" class="form-control" name="height" required>
+              </div>
+              <div class="mb-3">
+                <label>體重 (kg):</label>
+                <input type="number"step="0.1" class="form-control" name="weight" required>
+              </div>
+              <button type="submit" class="btn btn-primary w-100">計算</button>
+            </form>
+            <div class="mt-2">
+            <div class="card-text text-center">BMI 體重狀態 <br>
+            <span class="p-1">過輕:<=18.5</span><span class="p-1">健康:18.5-24</span>
+            <span class="p-1">過重:24-27</span><span class="p-1">肥胖:<=30 </span>
+            </div>
+              </div>
+            {% if bmi_result %}
+               <pre class="bg-light p-3 border rounded">{{ bmi_result }}</pre>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+
+      <!-- BMR 表單 -->
+      <div class="col-md-7">
+        <div class="card shadow mb-4">
+          <div class="card-header text-center">
+            <h4>BMR 計算</h4>
+          </div>
+          <div class="card-body">
+            <form method="POST">
+              <input type="hidden" name="form_type" value="bmr">
+              <div class="mb-3">
+                <label>性別 (男/女):</label>
+                <input type="text" class="form-control" name="sex" required>
+              </div>
+              <div class="mb-3">
+                <label>身高 (cm):</label>
+                <input type="number" step="0.1" class="form-control" name="height" required>
+              </div>
+              <div class="mb-3">
+                <label>體重 (kg):</label>
+                <input type="number" step="0.1" class="form-control" name="weight" required>
+              </div>
+              <div class="mb-3">
+                <label>年齡:</label>
+                <input type="number" class="form-control" name="age" required>
+              </div>
+              <button type="submit" class="btn btn-primary w-100">計算</button>
+            </form>
+            {% if bmr_result %}
+              <pre class="bg-light p-3 border rounded">{{ bmr_result }}</pre>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% endblock %}

@@ -10,6 +10,7 @@ from email.mime.text import MIMEText
 import smtplib 
 import os
 from service import get_carecenter_data
+from weight_machtine import get_bmi, get_bmr, get_tdee
 
 app = Flask(__name__)
 app.secret_key = 'Gail secret key'
@@ -308,7 +309,7 @@ def news():
     volunteer = session.get('volunteer')
     # 分頁邏輯
     per_page = 8 #每頁顯示8筆
-    page = request.args.get("page",1, type=int) # 取得目前第幾頁(預預為第1頁)
+    page = request.args.get("page",1, type=int) # 取得目前第幾頁(預設為第1頁)
     start = (page-1)*per_page # page-1 是扣除預設的第1頁
     end = start + per_page
     total_pages = (len(news_list)+per_page-1) // per_page # 計算總頁數
@@ -359,6 +360,30 @@ def service():
 # ----------------------------------------
     data = get_carecenter_data()                                
     return render_template('service.html', centers = data, userName=userName, volunteer=volunteer)
+
+# --------------- 綜合健康計算機---------------------------------------
+#  BMI BMR
+@app.route("/bmi", methods=["POST", "GET"])
+def bmi():
+    bmi_result = None
+    bmr_result = None
+    if request.method == "POST":
+        form_type = request.form.get("form_type")
+        height = float(request.form["height"])
+        weight = float(request.form["weight"])
+
+        if form_type == "bmi":
+            bmi_value = get_bmi(height, weight)
+            bmi_result = f"你的身高：{height:.1f}公分，體重：{weight:.1f}公斤，你的身體質量指數（BMI）：{bmi_value:.2f}"
+
+        elif form_type == "bmr":
+            sex = request.form["sex"]
+            age = int(request.form["age"])
+            bmr_value = get_bmr(sex, height, weight, age)
+            bmr_result = f"你的性別：{sex}，身高：{height:.1f}公分，體重：{weight:.1f}公斤，年齡是：{age}歲，你的基礎代謝率（BMR）：{bmr_value:.2f}"
+
+    return render_template("bmi.html", bmi_result=bmi_result, bmr_result=bmr_result)
+
 
 
 if __name__ == '__main__':
