@@ -10,7 +10,7 @@ from email.mime.text import MIMEText
 import smtplib 
 import os
 from service import get_carecenter_data
-from weight_machtine import get_bmi, get_bmr, get_tdee
+from weight_machtine import get_bmi, get_bmr, get_tdee, health_db
 
 app = Flask(__name__)
 app.secret_key = 'Gail secret key'
@@ -374,15 +374,37 @@ def bmi():
 
         if form_type == "bmi":
             bmi_value = get_bmi(height, weight)
-            bmi_result = f"你的身高：{height:.1f}公分，體重：{weight:.1f}公斤，你的身體質量指數（BMI）：{bmi_value:.2f}"
+            bmi_result = f"你的身高：{height:.1f}公分，體重：{weight:.1f}公斤\n你的身體質量指數（BMI）：{bmi_value:.2f}"
 
         elif form_type == "bmr":
             sex = request.form["sex"]
             age = int(request.form["age"])
             bmr_value = get_bmr(sex, height, weight, age)
-            bmr_result = f"你的性別：{sex}，身高：{height:.1f}公分，體重：{weight:.1f}公斤，年齡是：{age}歲，你的基礎代謝率（BMR）：{bmr_value:.2f}"
+            bmr_result = f"你的性別：{sex}，身高：{height:.1f}公分，體重：{weight:.1f}公斤，年齡是：{age}歲\n你的基礎代謝率（BMR）：{bmr_value:.2f}"
 
     return render_template("bmi.html", bmi_result=bmi_result, bmr_result=bmr_result)
+
+# TDEE  
+@app.route("/tdee" , methods=["POST", "GET"])
+def tdee():
+    tdee_result = None
+    if request.method == "POST":
+        sex = request.form["sex"]
+        height = float(request.form["height"])
+        weight = float(request.form["weight"])
+        age = int(request.form["age"])
+        times = float(request.form["times"])
+        tdee_value = get_tdee(sex, height, weight, age, times)
+        tdee_result = f"你的性別：{sex}，身高：{height:.1f}公分，體重：{weight:.1f}公斤，年齡是：{age}歲 \n每周週動量{times} \n每日消耗熱量（TDEE）：{tdee_value:.2f}"
+
+        # 儲存至資料庫
+        conn = sqlite3.connect("tdee.db")
+        c = conn.cursor()
+        c.execute("INSERT INTO tdee (sex, height, weight, age, times, tdee) VALUES (?, ?, ?, ?, ?, ?)",
+        (sex, height, weight, age, times, tdee_result))
+        conn.commit()
+        conn.close()
+    return render_template("tdee.html", tdee_result = tdee_result)
 
 
 
