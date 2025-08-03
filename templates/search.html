@@ -3,42 +3,69 @@
 {% block title %}長照地圖{% endblock title %}
 
 {% block content %}
-
-<section>
+<section class="py-4">
   <div class="container">
-    <div class="row justify-content-center">
-      <div class="col-md-12">
-        <div class="card shadow">
-          <div class="card-header text-center">
-            <form  method="post" action="/search">
-              <h4 class="fw-bolder">請輸入住址資訊</h4>
-              <label style="display:inline-block; width: 70px;">縣市:</label>
-              <input name="city" size="20">
-              <label style="display:inline-block; width: 70px;">行政區:</label>
-              <input name="dist" size="20"><br>
-              <button type="submit" class="center mt-2">查詢</button>
-              <div class="text-end px-3 pb-2">
-            <a href="https://addressrs.moi.gov.tw/address/#" target="_blank" class="btn btn-primary btn-sm">查詢各縣市/行政區</a>
+    <div class="row align-items-stretch">
+
+      <!-- 🔹 左側：查詢卡片 -->
+      <div class="col-md-4">
+        <div class="card shadow h-100">
+          <div class="card-header text-center bg-light">
+            <h5 class="fw-bold">請輸入住址資訊</h5>
           </div>
-            </form>  
+          <div class="card-body">
+            <form method="post" action="/search">
+              <div class="mb-3">
+                <label class="form-label">縣市:</label>
+                <input name="city" class="form-control" placeholder="只能「臺北市」 不能這樣「台北市」">
+              </div>
+              <div class="mb-3">
+                <label class="form-label">行政區:</label>
+                <input name="dist" class="form-control" placeholder="如 大安區">
+              </div>
+              <button type="submit" class="btn btn-primary w-100">查詢</button>
+              <span class="mt-3">如果不知該縣市的行政區， 可直接打縣市後<br>再按查詢，即可找到要的行政區。</span>
+            </form>
           </div>
         </div>
-     </div>
-<p><small>取自：<a href="https://addressrs.moi.gov.tw/address/#" target="_blank" rel="noopener noreferrer">內政部-門牌地址地圖</a></small></p>
+      </div>
+
+      <!-- 🔹 右側：查詢結果卡片 -->
+      <div class="col-md-8">
+        <div class="card shadow h-100">
+           <div class="card-header text-center bg-light">
+          <h5 class="fw-bold">顯示地圖 or 行政區的結果</h5>
+          </div>
+          <div class="card-body">
+
+            {% if message %}
+              <div class="alert alert-danger" role="alert">
+                {{ message|safe }}
+              </div>
+            {% endif %}
+
+            {% if result %}
+              <h5 class="fw-bold">行政區列表：</h5>
+              <ul class="list-group">
+                {% for d in result %}
+                  <li class="list-group-item">{{ d }}</li>
+                {% endfor %}
+              </ul>
+            {% endif %}
+
+            {% if map_html %}
+              <div style="width: 100%; height: 500px;">
+                {{ map_html|safe }}
+              </div>
+            {% endif %}
+
+          </div>
+        </div>
+      </div>
+
     </div>
-
-    {% if message %}
-      {{ message|safe }}
-    {% endif %}
-
-    {% if map_html %}
-    
-      <div style="width: 100%; height: 500px;">
-      {{ map_html | safe }}
-    {% endif %}
-
   </div>
 </section>
 {% endblock content %}
-  <script src="{{ url_for('static', filename='js/bootstrap.bundle.min.js') }}"></script>
+<script src="{{ url_for('static', filename='js/bootstrap.bundle.min.js') }}"></script>
   <script src="/static/js/bootstrap.bundle.min.js"></script>

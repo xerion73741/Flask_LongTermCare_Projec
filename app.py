@@ -1,17 +1,17 @@
 from flask import Flask, render_template, request, redirect, make_response, session, url_for
 import sqlite3
-import re  # for email validation
 from crawler import get_crawler_news
 from longterm_care_map import create_longtermcare_map
 from functools import wraps
 from volunteers_db import volunteers_db
 from datetime import date, timedelta
 from email.mime.text import MIMEText
+from collections import defaultdict
 import smtplib 
 import os
 from service import get_carecenter_data
 from weight_machtine import get_bmi, get_bmr, get_tdee, health_db
-
+from data_clean import city_district_data 
 app = Flask(__name__)
 app.secret_key = 'Gail secret key'
 
@@ -325,29 +325,35 @@ def news():
 
 # --------------- 地圖相關 --------------------------------------------
 @app.route('/search', methods=["POST", "GET"])
-# @login_required
 def search():
     name = request.cookies.get('userName')
 
-    if request.method == 'POST':
-        city = request.form.get('city')
-        dist = request.form.get('dist')
-        if not city or not dist:
-            return render_template('search.html', userName=name)
+    city = request.form.get("city")
+    dist = request.form.get("dist")
+    result = None
+    message = None
+    map_html = None
 
-        # 先產生 map_html
-        map_html = create_longtermcare_map(city, dist)
-        # 接著檢查 map_html 是不是「查無資料」的訊息
-        if map_html is None:
-            message = "<p style='color:red;'>查無資料, 請重新輸入</p>"
-            return render_template('search.html', message=message, userName=name, )
-        else:
-            print(map_html[:300])
-            return render_template('search.html', map_html=map_html, userName=name)
-    # 如果沒有東西進來
-    else:
-        return render_template('search.html', userName=name)
+    # 若使用者只選縣市，查行政區
+    if request.method == "POST":
+        if city and not dist:
+            result = city_district_data.get(city)
+        elif city and dist:
+            # 若選擇縣市 + 區域，就產生地圖
+            map_html = create_longtermcare_map(city, dist)
+            if map_html is None:
+                message = "<p style='color:red;'>查無資料, 請重新輸入</p>"
 
+    # 輸出頁面
+    cities = sorted(city_district_data.keys())
+    return render_template(
+        'search.html',
+        userName=name,
+        message=message,
+        map_html=map_html,
+        result=result,
+        cities=cities
+    )
 
 # --------------- 各縣市長照線上申請---------------------------------------
 # 加上request.args.get()判斷搜尋關鍵字
